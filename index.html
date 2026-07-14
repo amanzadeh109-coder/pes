@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0C10">
+<script>
+// Tema səhifə çəkilməzdən ƏVVƏL tətbiq olunur — yanıp-sönmə olmasın
+(function(){
+  try {
+    var t = localStorage.getItem('pes-theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    if (t === 'light') {
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', '#F7F8FA');
+    }
+  } catch(e) {}
+})();
+</script>
+<title>PES Championship 26/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2563EB;
+  --blue-soft:#3B82F6;
+  --blue-tint:rgba(37,99,235,.10);
+  --bg:#0A0C10;
+  --surface:#12151C;
+  --surface-2:#171B24;
+  --line:rgba(255,255,255,.07);
+  --line-2:rgba(255,255,255,.12);
+  --text:#E8EAED;
+  --text-2:#9BA3AF;
+  --text-3:#6B7280;
+  --win:#34D399;
+  --loss:#F87171;
+  --accent:#D4A94E;
+  --hover:rgba(255,255,255,.02);
+  --shadow:none;
+  --header-bg:rgba(10,12,16,.85);
+  --blue-tint-2:rgba(37,99,235,.14);
+  --win-bg:rgba(52,211,153,.15);
+  --win-br:rgba(52,211,153,.25);
+  --win-text:#6EE7B7;
+  --loss-bg:rgba(248,113,113,.11);
+  --loss-br:rgba(248,113,113,.25);
+  --loss-text:#FCA5A5;
+  --acc-bg:rgba(212,169,78,.08);
+  --acc-bg-2:rgba(212,169,78,.16);
+  --acc-br:rgba(212,169,78,.25);
+  --on-accent:#1A1508;
+  --sticky-me:#161C2C;
+  --sticky-p1:#181720;
+  --r:10px;
+  --r-sm:7px;
+}
+
+/* ---------- AÇIQ REJİM ---------- */
+[data-theme="light"]{
+  --blue:#2563EB;
+  --blue-soft:#1D4ED8;
+  --blue-tint:rgba(37,99,235,.07);
+  --blue-tint-2:rgba(37,99,235,.12);
+  --bg:#F7F8FA;
+  --surface:#FFFFFF;
+  --surface-2:#F1F3F6;
+  --line:rgba(15,23,42,.09);
+  --line-2:rgba(15,23,42,.16);
+  --text:#0F172A;
+  --text-2:#475569;
+  --text-3:#8A94A6;
+  --win:#059669;
+  --loss:#DC2626;
+  --accent:#A17A12;
+  --hover:rgba(15,23,42,.025);
+  --shadow:0 1px 2px rgba(15,23,42,.05);
+  --header-bg:rgba(247,248,250,.85);
+  --win-bg:rgba(5,150,105,.09);
+  --win-br:rgba(5,150,105,.2);
+  --win-text:#047857;
+  --loss-bg:rgba(220,38,38,.07);
+  --loss-br:rgba(220,38,38,.2);
+  --loss-text:#B91C1C;
+  --acc-bg:rgba(161,122,18,.07);
+  --acc-bg-2:rgba(161,122,18,.14);
+  --acc-br:rgba(161,122,18,.28);
+  --on-accent:#FFFFFF;
+  --sticky-me:#EDF2FD;
+  --sticky-p1:#FBF7EC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+.card,.auth-card,header,input,select,.seg,.md-h,.md-b{
+  transition:background-color .25s ease, border-color .25s ease, color .25s ease;
+}
+input,select,button{font-family:inherit}
+
+/* ---------- AUTH ---------- */
+#auth{min-height:100vh;display:grid;place-items:center;padding:24px}
+.auth-card{
+  width:100%;max-width:400px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.auth-head{padding:36px 32px 28px;text-align:center;border-bottom:1px solid var(--line)}
+.mark{
+  width:44px;height:44px;border-radius:11px;background:var(--blue);
+  display:grid;place-items:center;margin:0 auto 18px;
+  font-size:15px;font-weight:600;color:#fff;letter-spacing:-.3px;
+}
+.auth-head h1{font-size:21px;font-weight:600;letter-spacing:-.3px}
+.auth-head p{font-size:13px;color:var(--text-3);margin-top:5px}
+
+.tabs{display:flex;padding:8px;gap:4px;background:var(--surface-2)}
+.tab{
+  flex:1;padding:9px;background:none;border:none;color:var(--text-3);
+  font-size:13.5px;font-weight:500;cursor:pointer;border-radius:var(--r-sm);
+  transition:.16s;
+}
+.tab:hover{color:var(--text-2)}
+.tab.on{color:var(--text);background:var(--surface)}
+
+.auth-body{padding:26px 32px 32px}
+.field{margin-bottom:15px}
+.field label{
+  display:block;font-size:12.5px;font-weight:500;
+  color:var(--text-2);margin-bottom:7px;
+}
+input,select{
+  width:100%;padding:10px 13px;background:var(--bg);
+  border:1px solid var(--line-2);border-radius:var(--r-sm);color:var(--text);
+  font-size:14px;outline:none;transition:.16s;
+}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-tint)}
+input::placeholder{color:var(--text-3)}
+select{cursor:pointer}
+
+.btn{
+  width:100%;padding:11px;background:var(--blue);border:1px solid var(--blue);
+  border-radius:var(--r-sm);color:#fff;font-size:14px;font-weight:500;
+  cursor:pointer;transition:.16s;margin-top:6px;
+}
+.btn:hover{background:var(--blue-soft);border-color:var(--blue-soft)}
+.btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.msg{
+  margin-top:14px;padding:10px 13px;border-radius:var(--r-sm);font-size:13px;
+  display:none;line-height:1.5;
+}
+.msg.err{display:block;background:var(--loss-bg);color:var(--loss-text);border:1px solid var(--loss-br)}
+.msg.ok{display:block;background:var(--win-bg);color:var(--win-text);border:1px solid var(--win-br)}
+
+/* ---------- SHELL ---------- */
+#app{display:none;min-height:100vh;flex-direction:column}
+header{
+  position:sticky;top:0;z-index:50;
+  background:var(--header-bg);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.hbar{
+  max-width:1180px;margin:0 auto;padding:0 24px;height:60px;
+  display:flex;align-items:center;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.mark.sm{width:28px;height:28px;border-radius:7px;font-size:10px;margin:0}
+.brand-t{font-size:14.5px;font-weight:600;letter-spacing:-.2px;line-height:1.3}
+.brand-s{font-size:11.5px;color:var(--text-3);line-height:1.3}
+
+.admin-key{
+  display:none;align-items:center;gap:6px;
+  padding:6px 12px;margin-left:2px;
+  background:var(--acc-bg);
+  border:1px solid var(--acc-br);
+  border-radius:var(--r-sm);color:var(--accent);
+  font-size:13px;font-weight:500;cursor:pointer;
+  white-space:nowrap;transition:.16s;
+}
+.admin-key .k{font-size:12px;line-height:1;opacity:.85}
+.admin-key:hover{background:var(--acc-bg-2);border-color:var(--accent)}
+.admin-key.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+
+nav{display:flex;gap:1px;margin-left:auto}
+.nav-btn{
+  padding:7px 13px;background:none;border:none;color:var(--text-3);
+  font-size:13.5px;font-weight:500;cursor:pointer;border-radius:var(--r-sm);
+  transition:.16s;
+}
+.nav-btn:hover{color:var(--text-2);background:var(--surface)}
+.nav-btn.on{color:var(--text);background:var(--surface-2)}
+
+.who{
+  display:flex;align-items:center;gap:9px;padding-left:14px;
+  border-left:1px solid var(--line);
+}
+.av{
+  width:31px;height:31px;border-radius:50%;background:var(--surface-2);
+  border:1px solid var(--line-2);
+  display:grid;place-items:center;font-size:11.5px;font-weight:500;
+  color:var(--text-2);flex-shrink:0;
+}
+.who-name{font-size:13px;font-weight:500;line-height:1.3}
+.who-club{font-size:11.5px;color:var(--text-3);line-height:1.3}
+
+/* ---------- İKON DÜYMƏLƏR ---------- */
+.ico-btn{
+  background:none;border:none;color:var(--text-3);cursor:pointer;
+  padding:6px;border-radius:var(--r-sm);transition:.16s;
+  font-size:15px;line-height:1;
+  display:grid;place-items:center;width:30px;height:30px;
+}
+.ico-btn:hover{color:var(--text);background:var(--surface-2)}
+.ico-btn.out:hover{color:var(--loss);background:var(--loss-bg)}
+.ico-btn.float{
+  position:absolute;top:20px;right:20px;
+  background:var(--surface);border:1px solid var(--line);
+  width:36px;height:36px;box-shadow:var(--shadow);
+}
+#auth{position:relative}
+.out{
+  background:none;border:none;color:var(--text-3);cursor:pointer;
+  padding:6px;border-radius:var(--r-sm);transition:.16s;font-size:15px;line-height:1;
+}
+.out:hover{color:var(--loss);background:var(--loss-bg)}
+
+main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:32px 24px 64px}
+.view{display:none;animation:in .3s cubic-bezier(.16,1,.3,1)}
+.view.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.head{margin-bottom:22px}
+.head h2{font-size:21px;font-weight:600;letter-spacing:-.3px}
+.head p{font-size:13.5px;color:var(--text-3);margin-top:3px}
+
+/* ---------- CARD ---------- */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+}
+.card-h{
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:14px;font-weight:500;
+}
+.card-h span{font-size:12px;color:var(--text-3);font-weight:400}
+.scroll{overflow-x:auto}
+
+/* ---------- TABLE ---------- */
+table{width:100%;border-collapse:collapse;min-width:740px}
+thead th{
+  padding:11px 10px;text-align:left;font-size:11.5px;font-weight:500;
+  color:var(--text-3);border-bottom:1px solid var(--line);white-space:nowrap;
+}
+thead th.c{text-align:center}
+tbody td{padding:12px 10px;border-bottom:1px solid var(--line);font-size:14px}
+tbody td.c{text-align:center}
+tbody tr{transition:background .14s}
+tbody tr:hover{background:var(--hover)}
+tbody tr:last-child td{border-bottom:none}
+
+.pos{
+  font-family:'Roboto Mono',monospace;font-size:12.5px;
+  width:42px;text-align:center;color:var(--text-3);
+}
+tr.p1 .pos{color:var(--accent)}
+tr.p1 td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
+tr.p2 td:first-child,tr.p3 td:first-child{box-shadow:inset 2px 0 0 var(--line-2)}
+tr.me{background:var(--blue-tint)}
+tr.me:hover{background:var(--blue-tint-2)}
+
+.who-cell{display:flex;align-items:center;gap:10px;min-width:170px}
+.av.s{width:28px;height:28px;font-size:11px}
+.pn{font-size:14px;font-weight:500;line-height:1.35}
+.pc{font-size:11.5px;color:var(--text-3);line-height:1.35}
+.mono{font-family:'Roboto Mono',monospace;font-size:13px;color:var(--text-2)}
+.pts{font-family:'Roboto Mono',monospace;font-size:14.5px;font-weight:500;color:var(--text)}
+.gd.up{color:var(--win)}
+.gd.dn{color:var(--loss)}
+
+.form{display:flex;gap:3px;justify-content:center}
+.f{
+  width:18px;height:18px;border-radius:4px;display:grid;place-items:center;
+  font-size:9.5px;font-weight:500;
+}
+.f.W{background:var(--win-bg);color:var(--win)}
+.f.D{background:var(--surface-2);color:var(--text-2);border:1px solid var(--line)}
+.f.L{background:var(--loss-bg);color:var(--loss)}
+
+/* ---------- STATS ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rank{
+  display:flex;align-items:center;gap:11px;padding:11px 18px;
+  border-bottom:1px solid var(--line);transition:background .14s;
+}
+.rank:hover{background:var(--hover)}
+.rank:last-child{border-bottom:none}
+.rk{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--text-3);width:18px}
+.rank:first-child .rk{color:var(--accent)}
+.rank .big{
+  margin-left:auto;font-family:'Roboto Mono',monospace;
+  font-size:16px;font-weight:500;color:var(--text);
+  display:flex;align-items:center;gap:3px;flex-shrink:0;
+}
+.rank .big .form{gap:3px}
+
+/* ---------- PROFILE ---------- */
+.pro-head{
+  padding:24px;display:flex;align-items:center;gap:16px;
+  border-bottom:1px solid var(--line);
+}
+.av.xl{width:60px;height:60px;font-size:19px;background:var(--blue);border:none;color:#fff}
+.pro-head h3{font-size:19px;font-weight:600;letter-spacing:-.2px}
+.pro-head p{font-size:13.5px;color:var(--text-3);margin-top:1px}
+.rank-badge{
+  margin-left:auto;text-align:center;padding:12px 22px;
+  background:var(--surface-2);border-radius:var(--r-sm);
+  border:1px solid var(--line);
+}
+.rank-badge .n{
+  font-family:'Roboto Mono',monospace;font-size:22px;font-weight:500;
+  line-height:1;color:var(--text);
+}
+.rank-badge .l{font-size:11.5px;color:var(--text-3);margin-top:4px}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.stat{background:var(--surface);padding:18px 14px;text-align:center}
+.stat .n{
+  font-family:'Roboto Mono',monospace;font-size:21px;font-weight:500;
+  color:var(--text);line-height:1;
+}
+.stat .l{font-size:11.5px;color:var(--text-3);margin-top:6px}
+
+/* ---------- ADMIN ---------- */
+.admin-card{border-color:var(--acc-br)}
+.admin-card .card-h{color:var(--accent)}
+.frow{
+  display:grid;grid-template-columns:1fr 56px 18px 56px 1fr;gap:10px;
+  align-items:end;padding:18px;
+}
+.vs{text-align:center;color:var(--text-3);padding-bottom:11px;font-size:13px}
+.frow2{
+  display:grid;grid-template-columns:1fr;gap:10px;
+  padding:0 18px 18px;align-items:end;
+}
+.fix{
+  display:flex;align-items:center;gap:14px;padding:12px 18px;
+  border-bottom:1px solid var(--line);
+}
+.fix:last-child{border-bottom:none}
+.fix .side{flex:1;font-size:14px}
+.fix .side.a{text-align:right}
+.fix .sc{
+  font-family:'Roboto Mono',monospace;font-size:14px;font-weight:500;
+  background:var(--surface-2);padding:6px 14px;border-radius:var(--r-sm);
+  min-width:64px;text-align:center;border:1px solid var(--line);
+}
+.fix .sc.tbd{color:var(--text-3);font-weight:400}
+
+/* ---------- NƏTİCƏ REDAKTƏSİ ---------- */
+.md-tag{
+  font-family:'Roboto Mono',monospace;font-size:10.5px;color:var(--text-3);
+  background:var(--surface-2);border:1px solid var(--line);
+  padding:2px 6px;border-radius:4px;flex-shrink:0;min-width:30px;text-align:center;
+}
+.acts{display:flex;gap:2px;flex-shrink:0}
+.ic{
+  background:none;border:none;color:var(--text-3);cursor:pointer;
+  padding:5px 7px;border-radius:5px;transition:.16s;font-size:13px;line-height:1;
+}
+.ic:hover{background:var(--surface-2);color:var(--text)}
+.ic[data-del]:hover{color:var(--loss);background:var(--loss-bg)}
+.ic.ok{color:var(--win)}
+.ic.ok:hover{background:var(--win-bg);color:var(--win)}
+.ic:disabled{opacity:.4;cursor:not-allowed}
+
+/* redaktə rejimi: hansı elementlər görünür */
+.edit-m{display:none}
+.fix.editing .view-m{display:none}
+.fix.editing .edit-m{display:flex}
+.fix.editing{background:var(--blue-tint)}
+
+.sc-edit{
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+}
+.sc-edit input{
+  width:44px;padding:5px 4px;text-align:center;
+  font-family:'Roboto Mono',monospace;font-size:13px;font-weight:500;
+  background:var(--bg);border:1px solid var(--blue);
+  border-radius:5px;color:var(--text);
+}
+.sc-edit input:focus{box-shadow:0 0 0 2px var(--blue-tint)}
+.sc-edit .dash{color:var(--text-3);font-size:13px}
+
+/* nömrə oxlarını gizlət */
+.sc-edit input::-webkit-outer-spin-button,
+.sc-edit input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.sc-edit input[type=number]{-moz-appearance:textfield}
+
+.empty,.loading{padding:40px;text-align:center;color:var(--text-3);font-size:13.5px}
+
+/* ---------- FİKSTUR GENERATORU ---------- */
+.fx-pick{padding:18px 18px 16px;border-bottom:1px solid var(--line)}
+.seg{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  padding:4px;background:var(--bg);border:1px solid var(--line-2);
+  border-radius:var(--r-sm);
+}
+.seg-b{
+  padding:9px;background:none;border:none;color:var(--text-3);
+  font-size:13.5px;font-weight:500;cursor:pointer;
+  border-radius:5px;transition:.16s;
+}
+.seg-b:hover{color:var(--text-2)}
+.seg-b.on{background:var(--blue);color:#fff}
+.seg-hint{
+  font-size:12px;color:var(--text-3);margin-top:8px;line-height:1.5;
+}
+.fx{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+}
+.fx-info{background:var(--surface);padding:18px;text-align:center}
+.fx-n{
+  font-family:'Roboto Mono',monospace;font-size:23px;font-weight:500;
+  line-height:1;color:var(--text);
+}
+.fx-n.ready{color:var(--win)}
+.fx-l{font-size:11.5px;color:var(--text-3);margin-top:6px;line-height:1.4}
+.fx-act{
+  display:grid;grid-template-columns:2fr 1fr;gap:10px;padding:18px;
+  border-top:1px solid var(--line);
+}
+.btn.ghost{
+  background:transparent;border-color:var(--line-2);color:var(--text-2);
+}
+.btn.ghost:hover{
+  background:var(--loss-bg);border-color:var(--loss-br);
+  color:var(--loss);
+}
+.btn.ghost:disabled:hover{
+  background:transparent;border-color:var(--line-2);color:var(--text-2);
+}
+
+/* ---------- TUR QRUPLARI ---------- */
+.md{margin-bottom:12px}
+.md-h{
+  display:flex;align-items:center;gap:10px;padding:11px 16px;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:var(--r);cursor:pointer;transition:.16s;
+  user-select:none;
+}
+.md-h:hover{border-color:var(--line-2)}
+.md.open .md-h{border-radius:var(--r) var(--r) 0 0;border-bottom-color:transparent}
+.md-t{font-size:14px;font-weight:500}
+.md-leg{
+  font-size:11px;color:var(--text-3);padding:2px 7px;
+  background:var(--surface);border-radius:4px;border:1px solid var(--line);
+}
+.md-c{margin-left:auto;font-size:12px;color:var(--text-3)}
+.md-x{color:var(--text-3);font-size:11px;transition:transform .2s}
+.md.open .md-x{transform:rotate(90deg)}
+.md-b{
+  display:none;background:var(--surface);
+  border:1px solid var(--line);border-top:none;
+  border-radius:0 0 var(--r) var(--r);overflow:hidden;
+}
+.md.open .md-b{display:block}
+.md-h .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--text-3);flex-shrink:0;
+}
+.md-h .dot.done{background:var(--win)}
+.md-h .dot.part{background:var(--accent)}
+
+/* ---------- TABLET ---------- */
+@media(max-width:900px){
+  .grid2{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr;gap:12px}
+  .vs{display:none}
+  .frow2{grid-template-columns:1fr}
+  .hbar{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px}
+  nav{order:3;width:100%;margin-left:0}
+  .admin-key{order:2;margin-left:0}
+  .who{margin-left:auto}
+  .pro-head{flex-wrap:wrap}
+  .rank-badge{margin-left:0;width:100%}
+  main{padding:24px 16px 48px}
+}
+
+/* ---------- TELEFON ---------- */
+@media(max-width:640px){
+  body{font-size:14.5px}
+  main{padding:20px 12px 44px}
+
+  /* Header — sıxılmasın */
+  .hbar{padding:10px 12px;gap:8px}
+  .brand-s{display:none}
+  .brand-t{font-size:14px}
+  .who-name,.who-club{display:none}
+  .who{padding-left:10px;gap:4px}
+  .ico-btn{width:32px;height:32px;font-size:14px}
+  .ico-btn.float{top:14px;right:14px}
+  .admin-key{padding:6px 10px;font-size:12.5px}
+
+  /* Nav — barmaq üçün böyük, tam en, sürüşən */
+  nav{
+    gap:6px;overflow-x:auto;padding-bottom:2px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  }
+  nav::-webkit-scrollbar{display:none}
+  .nav-btn{
+    padding:9px 14px;font-size:13.5px;flex-shrink:0;
+    background:var(--surface);
+  }
+  .nav-btn.on{background:var(--surface-2);color:var(--text)}
+
+  .head h2{font-size:19px}
+  .head p{font-size:12.5px}
+
+  /* Cədvəl — oyunçu sütunu yapışıq, qalanı sürüşür */
+  table{min-width:620px}
+  .scroll{
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  thead th:nth-child(2),
+  tbody td:nth-child(2){
+    position:sticky;left:0;z-index:2;
+    background:var(--surface);
+    box-shadow:1px 0 0 var(--line);
+  }
+  thead th:nth-child(2){background:var(--surface)}
+  tbody tr:hover td:nth-child(2){background:var(--surface-2)}
+  tr.me td:nth-child(2){background:var(--sticky-me)}
+  tr.p1 td:nth-child(2){background:var(--sticky-p1)}
+
+  .pos{width:32px;font-size:12px}
+  .who-cell{min-width:120px;gap:8px}
+  .av.s{width:26px;height:26px;font-size:10px}
+  .pn{font-size:13px}
+  .pc{font-size:10.5px}
+  thead th{padding:9px 7px;font-size:10.5px}
+  tbody td{padding:10px 7px}
+  .mono{font-size:12.5px}
+  .pts{font-size:14px}
+  .f{width:16px;height:16px;font-size:9px;border-radius:3px}
+
+  /* Statistika — tək sütun */
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{padding:15px 10px}
+  .stat .n{font-size:19px}
+  .stat .l{font-size:10.5px}
+
+  /* Profil */
+  .pro-head{padding:18px;gap:13px}
+  .av.xl{width:52px;height:52px;font-size:17px}
+  .pro-head h3{font-size:17px}
+
+  /* Admin / oyunlar sətri */
+  .fix{padding:11px 12px;gap:8px}
+  .fix .side{font-size:12.5px}
+  .fix .sc{min-width:52px;padding:5px 9px;font-size:13px}
+  .md-tag{font-size:10px;padding:2px 5px;min-width:26px}
+  .ic{padding:6px;font-size:12.5px}
+  .sc-edit input{width:38px;padding:5px 2px;font-size:12.5px}
+  .card-h{padding:12px 14px;font-size:13.5px}
+  .rank{padding:10px 14px;gap:9px}
+  .frow,.frow2{padding-left:14px;padding-right:14px}
+
+  /* Fikstur paneli */
+  .fx-pick{padding:14px}
+  .seg-b{padding:9px 4px;font-size:12.5px}
+  .seg-hint{font-size:11px}
+  .fx{grid-template-columns:1fr 1fr 1fr}
+  .fx-info{padding:14px 8px}
+  .fx-n{font-size:19px}
+  .fx-l{font-size:10px}
+  .fx-act{grid-template-columns:1fr;padding:14px;gap:8px}
+
+  /* Tur qrupları */
+  .md-h{padding:10px 13px;gap:8px}
+  .md-t{font-size:13.5px}
+  .md-leg{font-size:10px;padding:2px 6px}
+  .md-c{font-size:11.5px}
+
+  /* Auth */
+  .auth-body{padding:22px 22px 26px}
+  .auth-head{padding:30px 22px 24px}
+
+  /* iOS zoom-u dayandır (16px-dən kiçik input zoom edir) */
+  input,select{font-size:16px}
+}
+
+/* ---------- KİÇİK TELEFON ---------- */
+@media(max-width:380px){
+  .stats{grid-template-columns:1fr 1fr}
+  .brand-t{display:none}
+  .nav-btn{padding:9px 11px;font-size:13px}
+  .admin-key{padding:6px 9px}
+  .admin-key span:not(.k){display:none}
+}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ AUTH ============ -->
+<section id="auth">
+  <button class="ico-btn float" id="btnTheme2" title="Rejimi dəyiş" aria-label="Rejimi dəyiş">
+    <span id="themeIcon2">☾</span>
+  </button>
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="mark">PES</div>
+      <h1>PES Championship</h1>
+      <p>Sezon 26/27</p>
+    </div>
+    <div class="tabs">
+      <button class="tab on" id="tabIn">Giriş</button>
+      <button class="tab" id="tabUp">Qeydiyyat</button>
+    </div>
+    <div class="auth-body">
+      <div id="formIn">
+        <div class="field">
+          <label>E-mail</label>
+          <input type="email" id="inEmail" placeholder="ad@mail.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Şifrə</label>
+          <input type="password" id="inPass" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn" id="btnIn">Daxil ol</button>
+      </div>
+      <div id="formUp" style="display:none">
+        <div class="field">
+          <label>Ad soyad</label>
+          <input type="text" id="upName" placeholder="Məmmədəli Əmənzadə">
+        </div>
+        <div class="field">
+          <label>Komanda</label>
+          <input type="text" id="upClub" placeholder="Man City">
+        </div>
+        <div class="field">
+          <label>E-mail</label>
+          <input type="email" id="upEmail" placeholder="ad@mail.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Şifrə</label>
+          <input type="password" id="upPass" placeholder="Ən azı 6 simvol" autocomplete="new-password">
+        </div>
+        <button class="btn" id="btnUp">Turnirə qoşul</button>
+      </div>
+      <div class="msg" id="authMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header>
+    <div class="hbar">
+      <div class="brand">
+        <div class="mark sm">PES</div>
+        <div>
+          <div class="brand-t">Championship</div>
+          <div class="brand-s">Sezon 26/27</div>
+        </div>
+      </div>
+
+      <button class="admin-key" data-v="admin" id="navAdmin" title="Admin panel">
+        <span class="k">⚙</span><span>Admin panel</span>
+      </button>
+
+      <nav>
+        <button class="nav-btn on" data-v="table">Cədvəl</button>
+        <button class="nav-btn" data-v="stats">Statistika</button>
+        <button class="nav-btn" data-v="fixtures">Oyunlar</button>
+        <button class="nav-btn" data-v="profile">Profil</button>
+      </nav>
+
+      <div class="who">
+        <div class="av" id="meAv">—</div>
+        <div>
+          <div class="who-name" id="meName">—</div>
+          <div class="who-club" id="meClub">—</div>
+        </div>
+        <button class="ico-btn" id="btnTheme" title="Rejimi dəyiş" aria-label="Rejimi dəyiş">
+          <span id="themeIcon">☾</span>
+        </button>
+        <button class="ico-btn out" id="btnOut" title="Çıxış" aria-label="Çıxış">⏻</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- CƏDVƏL -->
+    <section class="view on" id="vTable">
+      <div class="head">
+        <h2>Lig cədvəli</h2>
+        <p>İkili dövrə · Qalibiyyət 3 xal, heç-heçə 1 xal</p>
+      </div>
+      <div class="card"><div class="scroll">
+        <table>
+          <thead><tr>
+            <th class="c">#</th><th>Oyunçu</th>
+            <th class="c">O</th><th class="c">Q</th><th class="c">H</th><th class="c">M</th>
+            <th class="c">VQ</th><th class="c">BQ</th><th class="c">QF</th>
+            <th class="c">Forma</th><th class="c">Xal</th>
+          </tr></thead>
+          <tbody id="tbTable"><tr><td colspan="11" class="loading">Yüklənir…</td></tr></tbody>
+        </table>
+      </div></div>
+    </section>
+
+    <!-- STATİSTİKA -->
+    <section class="view" id="vStats">
+      <div class="head">
+        <h2>Statistika</h2>
+        <p>Turnir liderləri</p>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-h">Qol kralı <span>Vurulan qol</span></div>
+          <div id="topG"><div class="loading">Yüklənir…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Ən yaxşı müdafiə <span>Buraxılan qol</span></div>
+          <div id="topD"><div class="loading">Yüklənir…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Ən yaxşı qol fərqi <span>Qol fərqi</span></div>
+          <div id="topGD"><div class="loading">Yüklənir…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Ən yaxşı forma <span>Son 5 oyun</span></div>
+          <div id="topF"><div class="loading">Yüklənir…</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OYUNLAR -->
+    <section class="view" id="vFix">
+      <div class="head">
+        <h2>Oyunlar</h2>
+        <p>Turlara görə bütün fikstur</p>
+      </div>
+      <div id="fixList"><div class="loading">Yüklənir…</div></div>
+    </section>
+
+    <!-- PROFİL -->
+    <section class="view" id="vPro">
+      <div class="head">
+        <h2>Profil</h2>
+        <p>Şəxsi statistikan</p>
+      </div>
+      <div class="card">
+        <div class="pro-head">
+          <div class="av xl" id="pAv">—</div>
+          <div>
+            <h3 id="pName">—</h3>
+            <p id="pClub">—</p>
+          </div>
+          <div class="rank-badge">
+            <div class="n" id="pPos">—</div>
+            <div class="l">Sıra</div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="n" id="sP">0</div><div class="l">Oyun</div></div>
+          <div class="stat"><div class="n" id="sW">0</div><div class="l">Qalibiyyət</div></div>
+          <div class="stat"><div class="n" id="sD">0</div><div class="l">Heç-heçə</div></div>
+          <div class="stat"><div class="n" id="sL">0</div><div class="l">Məğlubiyyət</div></div>
+          <div class="stat"><div class="n" id="sGF">0</div><div class="l">Vurulan</div></div>
+          <div class="stat"><div class="n" id="sGA">0</div><div class="l">Buraxılan</div></div>
+          <div class="stat"><div class="n" id="sGD">0</div><div class="l">Qol fərqi</div></div>
+          <div class="stat"><div class="n" id="sPT">0</div><div class="l">Xal</div></div>
+          <div class="stat"><div class="n" id="sPPG">0</div><div class="l">Xal / oyun</div></div>
+          <div class="stat"><div class="n" id="sWR">0%</div><div class="l">Qalibiyyət %</div></div>
+          <div class="stat"><div class="n" id="sGPG">0</div><div class="l">Qol / oyun</div></div>
+          <div class="stat"><div class="n" id="sCPG">0</div><div class="l">Buraxılan / oyun</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMİN -->
+    <section class="view" id="vAdmin">
+      <div class="head">
+        <h2>Admin panel</h2>
+        <p>Matç nəticəsi əlavə et — cədvəl avtomatik yenilənir</p>
+      </div>
+      <!-- FİKSTUR -->
+      <div class="card admin-card" style="margin-bottom:16px">
+        <div class="card-h">Fikstur <span id="fxState">—</span></div>
+
+        <div class="fx-pick">
+          <div class="field" style="margin:0">
+            <label>Neçə dövrə?</label>
+            <div class="seg">
+              <button class="seg-b" data-cyc="1">1 dövrə</button>
+              <button class="seg-b on" data-cyc="2">2 dövrə</button>
+              <button class="seg-b" data-cyc="3">3 dövrə</button>
+            </div>
+            <div class="seg-hint" id="fxHint">Hər cütlük 2 matç — ev və səfər</div>
+          </div>
+        </div>
+
+        <div class="fx">
+          <div class="fx-info">
+            <div class="fx-n" id="fxPl">0</div>
+            <div class="fx-l">Oyunçu</div>
+          </div>
+          <div class="fx-info">
+            <div class="fx-n" id="fxM">0</div>
+            <div class="fx-l">Matç</div>
+          </div>
+          <div class="fx-info">
+            <div class="fx-n" id="fxR">0</div>
+            <div class="fx-l">Tur</div>
+          </div>
+        </div>
+
+        <div class="fx-act">
+          <button class="btn" id="btnFx">Fiksturu qur</button>
+          <button class="btn ghost" id="btnFxReset">Sıfırla</button>
+        </div>
+        <div class="msg" id="fxMsg" style="margin:0 18px 18px"></div>
+      </div>
+
+      <div class="card admin-card" style="margin-bottom:16px">
+        <div class="card-h">Nəticə əlavə et</div>
+        <div class="frow">
+          <div class="field" style="margin:0">
+            <label>Ev sahibi</label>
+            <select id="aHome"></select>
+          </div>
+          <div class="field" style="margin:0">
+            <label>Qol</label>
+            <input type="number" id="aHG" min="0" step="1" value="0">
+          </div>
+          <div class="vs">—</div>
+          <div class="field" style="margin:0">
+            <label>Qol</label>
+            <input type="number" id="aAG" min="0" step="1" value="0">
+          </div>
+          <div class="field" style="margin:0">
+            <label>Qonaq</label>
+            <select id="aAway"></select>
+          </div>
+        </div>
+        <div class="frow2">
+          <button class="btn" id="btnSave" style="margin:0">Matçı yaz</button>
+        </div>
+        <div class="msg" id="admMsg" style="margin:0 18px 18px"></div>
+      </div>
+      <div class="card admin-card">
+        <div class="card-h">Yazılmış matçlar <span id="admCount">—</span></div>
+        <div id="admList"><div class="loading">Yüklənir…</div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL  = 'https://kncfppymcbezakxlslmc.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtuY2ZwcHltY2JlemFreGxzbG1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NjI3MTIsImV4cCI6MjA5OTUzODcxMn0.1c5-mDHEJVaSv3EFkPpbUZPFdlD4JTJe46TTlrmLpAM';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const $ = id => document.getElementById(id);
+
+/* ============================================================
+   TEMA (qaranlıq / açıq)
+   ============================================================ */
+const THEME_KEY = 'pes-theme';
+
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+
+  const icon = t === 'light' ? '☀' : '☾';
+  const ti  = $('themeIcon');
+  const ti2 = $('themeIcon2');
+  if (ti)  ti.textContent  = icon;
+  if (ti2) ti2.textContent = icon;
+
+  // telefon brauzerinin üst zolağı
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t === 'light' ? '#F7F8FA' : '#0A0C10');
+
+  try { localStorage.setItem(THEME_KEY, t); } catch(e) {}
+}
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+// başlanğıc: yadda saxlanmış seçim → yoxdursa sistemin seçimi
+(function initTheme() {
+  let t = null;
+  try { t = localStorage.getItem(THEME_KEY); } catch(e) {}
+  if (!t) {
+    t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+      ? 'light' : 'dark';
+  }
+  applyTheme(t);
+})();
+
+$('btnTheme').onclick  = toggleTheme;
+$('btnTheme2').onclick = toggleTheme;
+
+/* ---------- köməkçilər ---------- */
+const ini = n => (n||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const esc = s => (s??'').toString().replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const flash = (el, txt, ok) => {
+  el.textContent = txt;
+  el.className = 'msg ' + (ok ? 'ok' : 'err');
+  setTimeout(()=>{ el.className = 'msg'; }, 4500);
+};
+
+let ME = null, TABLE = [], PLAYERS = [];
+
+/* ---------- AUTH ---------- */
+$('tabIn').onclick = () => {
+  $('tabIn').classList.add('on'); $('tabUp').classList.remove('on');
+  $('formIn').style.display='block'; $('formUp').style.display='none';
+};
+$('tabUp').onclick = () => {
+  $('tabUp').classList.add('on'); $('tabIn').classList.remove('on');
+  $('formUp').style.display='block'; $('formIn').style.display='none';
+};
+
+$('btnUp').onclick = async () => {
+  const name = $('upName').value.trim(), club = $('upClub').value.trim();
+  const email = $('upEmail').value.trim(), pass = $('upPass').value;
+  if (!name || !email || pass.length < 6)
+    return flash($('authMsg'), 'Ad, e-mail və ən azı 6 simvol şifrə lazımdır.', false);
+
+  $('btnUp').disabled = true;
+  const { error } = await sb.auth.signUp({
+    email, password: pass,
+    options: { data: { full_name: name, club_name: club || '—' } }
+  });
+  $('btnUp').disabled = false;
+  if (error) return flash($('authMsg'), error.message, false);
+  flash($('authMsg'), 'Hesab yaradıldı. İndi daxil ola bilərsən.', true);
+};
+
+$('btnIn').onclick = async () => {
+  const email = $('inEmail').value.trim(), pass = $('inPass').value;
+  if (!email || !pass) return flash($('authMsg'), 'E-mail və şifrə lazımdır.', false);
+  $('btnIn').disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  $('btnIn').disabled = false;
+  if (error) flash($('authMsg'), error.message, false);
+};
+
+$('btnOut').onclick = () => sb.auth.signOut();
+
+sb.auth.onAuthStateChange(async (_e, session) => {
+  if (session?.user) await boot(session.user);
+  else {
+    ME = null;
+    $('auth').style.display = 'grid';
+    $('app').style.display = 'none';
+  }
+});
+
+/* ---------- BOOT ---------- */
+async function boot(user) {
+  const { data: me } = await sb.from('players').select('*').eq('id', user.id).single();
+  ME = me;
+  if (!ME) return;
+
+  $('auth').style.display = 'none';
+  $('app').style.display = 'flex';
+
+  $('meAv').textContent = ini(ME.full_name);
+  $('meName').textContent = ME.full_name;
+  $('meClub').textContent = ME.club_name || '—';
+  if (ME.is_admin) $('navAdmin').style.display = 'flex';
+
+  await refresh();
+
+  sb.channel('live')
+    .on('postgres_changes', { event:'*', schema:'public', table:'matches' }, refresh)
+    .subscribe();
+}
+
+async function refresh() {
+  const [t, p, m] = await Promise.all([
+    sb.from('league_table').select('*'),
+    sb.from('players').select('id, full_name, club_name').order('full_name'),
+    sb.from('matches').select('*').order('played_at', { ascending:false, nullsFirst:false })
+  ]);
+  TABLE = t.data || [];
+  PLAYERS = p.data || [];
+  const M = m.data || [];
+
+  renderTable();
+  renderStats();
+  renderFixtures(M);
+  renderProfile();
+  if (ME?.is_admin) renderAdmin(M);
+}
+
+/* ---------- NAV ---------- */
+const VIEWS = { table:'vTable', stats:'vStats', fixtures:'vFix', profile:'vPro', admin:'vAdmin' };
+document.querySelectorAll('[data-v]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-v]').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  $(VIEWS[b.dataset.v]).classList.add('on');
+  window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+/* ---------- CƏDVƏL ---------- */
+const formHTML = f => !f
+  ? '<span style="color:var(--text-3);font-size:12px">—</span>'
+  : '<div class="form">' + [...f].map(c=>`<div class="f ${c}">${c}</div>`).join('') + '</div>';
+
+function renderTable() {
+  const tb = $('tbTable');
+  if (!TABLE.length) {
+    tb.innerHTML = '<tr><td colspan="11" class="empty">Hələ iştirakçı yoxdur.</td></tr>';
+    return;
+  }
+  tb.innerHTML = TABLE.map((r,i) => {
+    const cls = [i===0&&'p1', i===1&&'p2', i===2&&'p3', r.player_id===ME.id&&'me'].filter(Boolean).join(' ');
+    const gdc = r.gd > 0 ? 'up' : r.gd < 0 ? 'dn' : '';
+    const gds = r.gd > 0 ? '+' + r.gd : r.gd;
+    return `<tr class="${cls}">
+      <td class="pos">${i+1}</td>
+      <td><div class="who-cell">
+        <div class="av s">${esc(ini(r.full_name))}</div>
+        <div><div class="pn">${esc(r.full_name)}</div><div class="pc">${esc(r.club_name||'—')}</div></div>
+      </div></td>
+      <td class="c mono">${r.played}</td>
+      <td class="c mono">${r.won}</td>
+      <td class="c mono">${r.drawn}</td>
+      <td class="c mono">${r.lost}</td>
+      <td class="c mono">${r.gf}</td>
+      <td class="c mono">${r.ga}</td>
+      <td class="c mono gd ${gdc}">${gds}</td>
+      <td class="c">${formHTML(r.form)}</td>
+      <td class="c pts">${r.points}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ---------- STATİSTİKA ---------- */
+function rankList(rows, fmt) {
+  if (!rows.length)
+    return '<div class="empty">Hələ matç oynanılmayıb.</div>';
+
+  return rows.slice(0,6).map((r,i) => `
+    <div class="rank">
+      <div class="rk">${i+1}</div>
+      <div class="av s">${esc(ini(r.full_name))}</div>
+      <div>
+        <div class="pn">${esc(r.full_name)}</div>
+        <div class="pc">${esc(r.club_name||'—')}</div>
+      </div>
+      <div class="big">${fmt(r)}</div>
+    </div>`).join('');
+}
+
+function renderStats() {
+  // yalnız oyun oynamışlar sıralamada görünür
+  const P = TABLE.filter(r => r.played > 0);
+
+  const desc = (k) => [...P].sort((a,b) => b[k]-a[k] || b.points-a.points);
+  const asc  = (k) => [...P].sort((a,b) => a[k]-b[k] || b.points-a.points);
+
+  // Qol kralı — ən çox vuran
+  $('topG').innerHTML = rankList(desc('gf'), r => r.gf);
+
+  // Ən yaxşı müdafiə — ən az buraxan
+  $('topD').innerHTML = rankList(asc('ga'), r => r.ga);
+
+  // Ən yaxşı qol fərqi
+  $('topGD').innerHTML = rankList(desc('gd'),
+    r => (r.gd > 0 ? '+' : '') + r.gd);
+
+  // Ən yaxşı forma — son 5 oyunda toplanan xal
+  const byForm = [...P].sort((a,b) =>
+    (b.form_pts ?? 0) - (a.form_pts ?? 0) || b.points - a.points
+  );
+  $('topF').innerHTML = rankList(byForm, r => formHTML(r.form));
+}
+
+/* ---------- OYUNLAR (turlara görə) ---------- */
+const nameOf = id => PLAYERS.find(p=>p.id===id)?.full_name || '—';
+
+function renderFixtures(M) {
+  const list = $('fixList');
+
+  if (!M.length) {
+    list.innerHTML = `<div class="card"><div class="empty">
+      Fikstur hələ qurulmayıb.${ME?.is_admin ? '<br>Admin paneldə «Fiksturu qur» düyməsini bas.' : ''}
+    </div></div>`;
+    return;
+  }
+
+  // turlara böl
+  const byMd = {};
+  M.forEach(m => {
+    const md = m.matchday || 0;
+    (byMd[md] = byMd[md] || []).push(m);
+  });
+
+  const mds = Object.keys(byMd).map(Number).sort((a,b)=>a-b);
+
+  // ilk oynanmamış tur avtomatik açılsın
+  const nextMd = mds.find(md => byMd[md].some(m => m.home_goals === null)) ?? mds[0];
+
+  list.innerHTML = mds.map(md => {
+    const ms = byMd[md];
+    const done = ms.filter(m => m.home_goals !== null).length;
+    const leg = ms[0]?.leg || 1;
+    const dot = done === ms.length ? 'done' : done > 0 ? 'part' : '';
+    const open = md === nextMd ? 'open' : '';
+
+    const rows = ms.map(m => {
+      const p = m.home_goals !== null;
+      return `<div class="fix">
+        <div class="side a">${esc(nameOf(m.home_id))}</div>
+        <div class="sc ${p?'':'tbd'}">${p ? `${m.home_goals} : ${m.away_goals}` : 'vs'}</div>
+        <div class="side">${esc(nameOf(m.away_id))}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="md ${open}" data-md="${md}">
+      <div class="md-h">
+        <span class="md-x">▶</span>
+        <span class="dot ${dot}"></span>
+        <span class="md-t">Tur ${md}</span>
+        <span class="md-leg">${leg}. dövrə</span>
+        <span class="md-c">${done} / ${ms.length}</span>
+      </div>
+      <div class="md-b">${rows}</div>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.md-h').forEach(h => {
+    h.onclick = () => h.parentElement.classList.toggle('open');
+  });
+}
+
+/* ---------- PROFİL ---------- */
+function renderProfile() {
+  const i = TABLE.findIndex(r => r.player_id === ME.id);
+  const r = TABLE[i];
+  if (!r) return;
+
+  $('pAv').textContent = ini(r.full_name);
+  $('pName').textContent = r.full_name;
+  $('pClub').textContent = r.club_name || '—';
+  $('pPos').textContent = i + 1;
+
+  $('sP').textContent = r.played;
+  $('sW').textContent = r.won;
+  $('sD').textContent = r.drawn;
+  $('sL').textContent = r.lost;
+  $('sGF').textContent = r.gf;
+  $('sGA').textContent = r.ga;
+  $('sGD').textContent = r.gd > 0 ? '+' + r.gd : r.gd;
+  $('sPT').textContent = r.points;
+  $('sPPG').textContent = r.played ? (r.points / r.played).toFixed(2) : '0.00';
+  $('sWR').textContent  = r.played ? Math.round(r.won / r.played * 100) + '%' : '0%';
+  $('sGPG').textContent = r.played ? (r.gf / r.played).toFixed(1) : '0.0';
+  $('sCPG').textContent = r.played ? (r.ga / r.played).toFixed(1) : '0.0';
+}
+
+/* --- Dövrə seçimi --- */
+let CYCLES = 2;
+
+const CYC_TEXT = {
+  1: 'Hər cütlük 1 matç — qısa turnir',
+  2: 'Hər cütlük 2 matç — ev və səfər (ev/qonaq tam bərabər)',
+  3: 'Hər cütlük 3 matç — uzun turnir'
+};
+
+document.querySelectorAll('.seg-b').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.seg-b').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  CYCLES = +b.dataset.cyc;
+  $('fxHint').textContent = CYC_TEXT[CYCLES];
+  updateFxStats();
+});
+
+function updateFxStats() {
+  const n = PLAYERS.length;
+  const even = n % 2 === 0 ? n : n + 1;
+  const matches = n >= 2 ? (n * (n - 1) / 2) * CYCLES : 0;
+  const rounds  = n >= 2 ? (even - 1) * CYCLES : 0;
+
+  $('fxPl').textContent = n;
+  $('fxPl').className = 'fx-n' + (n >= 2 ? ' ready' : '');
+  $('fxM').textContent = matches;
+  $('fxR').textContent = rounds;
+}
+
+/* ---------- ADMİN ---------- */
+function renderAdmin(M) {
+  const opts = PLAYERS.map(p=>`<option value="${p.id}">${esc(p.full_name)}</option>`).join('');
+  if ($('aHome').innerHTML !== opts) {
+    $('aHome').innerHTML = opts;
+    $('aAway').innerHTML = opts;
+    if (PLAYERS[1]) $('aAway').value = PLAYERS[1].id;
+  }
+
+  updateFxStats();
+
+  const built  = M.length > 0;
+  const played = M.filter(m => m.home_goals !== null).length;
+
+  $('fxState').textContent = !built
+    ? 'Qurulmayıb'
+    : `${played} / ${M.length} oynanılıb`;
+
+  $('btnFx').disabled = PLAYERS.length < 2 || played > 0;
+  $('btnFx').textContent = built ? 'Yenidən qur' : 'Fiksturu qur';
+  $('btnFxReset').disabled = !built;
+
+  /* --- Yazılmış matçlar --- */
+  const done = M.filter(m => m.home_goals !== null)
+                .sort((a,b) => (b.matchday||0) - (a.matchday||0));
+
+  $('admCount').textContent = done.length + ' nəticə';
+  const list = $('admList');
+
+  if (!done.length) {
+    list.innerHTML = '<div class="empty">Hələ nəticə yoxdur.</div>';
+    return;
+  }
+
+  list.innerHTML = done.map(m => `
+    <div class="fix" data-row="${m.id}">
+      <span class="md-tag">${m.matchday ? 'T' + m.matchday : '—'}</span>
+
+      <div class="side a">${esc(nameOf(m.home_id))}</div>
+
+      <!-- baxış rejimi -->
+      <div class="sc view-m">${m.home_goals} : ${m.away_goals}</div>
+
+      <!-- redaktə rejimi -->
+      <div class="sc-edit edit-m">
+        <input type="number" min="0" step="1" class="e-h" value="${m.home_goals}">
+        <span class="dash">:</span>
+        <input type="number" min="0" step="1" class="e-a" value="${m.away_goals}">
+      </div>
+
+      <div class="side">${esc(nameOf(m.away_id))}</div>
+
+      <div class="acts">
+        <button class="ic view-m" data-edit="${m.id}" title="Düzəlt">✎</button>
+        <button class="ic view-m" data-del="${m.id}" title="Nəticəni sil">✕</button>
+        <button class="ic ok edit-m" data-save="${m.id}" title="Yadda saxla">✓</button>
+        <button class="ic edit-m" data-cancel="${m.id}" title="Ləğv et">✕</button>
+      </div>
+    </div>`).join('');
+
+  /* --- Redaktəyə keç --- */
+  list.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => {
+    list.querySelectorAll('.fix.editing').forEach(r => r.classList.remove('editing'));
+    const row = list.querySelector(`[data-row="${b.dataset.edit}"]`);
+    row.classList.add('editing');
+    row.querySelector('.e-h').focus();
+    row.querySelector('.e-h').select();
+  });
+
+  /* --- Ləğv et --- */
+  list.querySelectorAll('[data-cancel]').forEach(b => b.onclick = () => {
+    list.querySelector(`[data-row="${b.dataset.cancel}"]`).classList.remove('editing');
+  });
+
+  /* --- Yadda saxla --- */
+  list.querySelectorAll('[data-save]').forEach(b => b.onclick = async () => {
+    const id  = b.dataset.save;
+    const row = list.querySelector(`[data-row="${id}"]`);
+    const hg  = +row.querySelector('.e-h').value;
+    const ag  = +row.querySelector('.e-a').value;
+
+    if (hg < 0 || ag < 0 || isNaN(hg) || isNaN(ag))
+      return flash($('admMsg'), 'Qol sayı düzgün deyil.', false);
+
+    b.disabled = true;
+    const { error } = await sb.from('matches')
+      .update({ home_goals: hg, away_goals: ag })
+      .eq('id', id);
+    b.disabled = false;
+
+    if (error) return flash($('admMsg'), error.message, false);
+
+    const m = done.find(x => String(x.id) === String(id));
+    flash($('admMsg'),
+      `Düzəldildi: ${nameOf(m.home_id)} ${hg}–${ag} ${nameOf(m.away_id)}`, true);
+    refresh();
+  });
+
+  /* --- Enter = saxla, Esc = ləğv --- */
+  list.querySelectorAll('.e-h, .e-a').forEach(inp => inp.onkeydown = e => {
+    const row = inp.closest('.fix');
+    if (e.key === 'Enter') row.querySelector('[data-save]').click();
+    if (e.key === 'Escape') row.classList.remove('editing');
+  });
+
+  /* --- Nəticəni sil (matç fiksturda qalır) --- */
+  list.querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
+    if (!confirm('Nəticə silinsin? Matç fiksturda oynanılmamış kimi qalacaq.')) return;
+    const { error } = await sb.from('matches')
+      .update({ home_goals:null, away_goals:null, played_at:null })
+      .eq('id', b.dataset.del);
+    if (error) flash($('admMsg'), error.message, false);
+    else { flash($('admMsg'), 'Nəticə silindi.', true); refresh(); }
+  });
+}
+
+/* --- Fiksturu qur --- */
+$('btnFx').onclick = async () => {
+  const n = PLAYERS.length;
+  const matches = (n * (n - 1) / 2) * CYCLES;
+
+  if (!confirm(
+    `${n} oyunçu · ${CYCLES} dövrə · ${matches} matç\n\n` +
+    `Köhnə fikstur silinəcək. Davam?`
+  )) return;
+
+  $('btnFx').disabled = true;
+  $('btnFx').textContent = 'Qurulur…';
+
+  const { data, error } = await sb.rpc('generate_fixtures', { p_cycles: CYCLES });
+
+  $('btnFx').textContent = 'Fiksturu qur';
+
+  if (error) {
+    const msg = error.message || '';
+    if (msg.includes('schema cache') || msg.includes('Could not find the function')) {
+      flash($('fxMsg'),
+        'Sxem keşi köhnəlib. Supabase SQL Editor-da işlət:  notify pgrst, \'reload schema\';  sonra 30 san gözlə.',
+        false);
+    } else {
+      flash($('fxMsg'), msg, false);
+    }
+  }
+  else if (String(data).startsWith('XƏTA')) flash($('fxMsg'), data, false);
+  else flash($('fxMsg'), data, true);
+
+  refresh();
+};
+
+/* --- Sıfırla --- */
+$('btnFxReset').onclick = async () => {
+  if (!confirm('BÜTÜN fikstur və nəticələr silinəcək.\n\nBu geri qaytarılmır. Əminsən?')) return;
+  if (!confirm('Son dəfə soruşuram — hər şey silinsin?')) return;
+
+  $('btnFxReset').disabled = true;
+  const { data, error } = await sb.rpc('reset_fixtures');
+  if (error) flash($('fxMsg'), error.message, false);
+  else flash($('fxMsg'), data, true);
+  refresh();
+};
+
+$('btnSave').onclick = async () => {
+  const home = $('aHome').value, away = $('aAway').value;
+  const hg = +$('aHG').value, ag = +$('aAG').value;
+
+  if (home === away) return flash($('admMsg'), 'Oyunçu özü ilə oynaya bilməz.', false);
+  if (hg < 0 || ag < 0) return flash($('admMsg'), 'Qol sayı mənfi ola bilməz.', false);
+
+  $('btnSave').disabled = true;
+
+  // Fiksturda bu matçı tap (hələ oynanmamış)
+  const { data: found } = await sb.from('matches')
+    .select('id, matchday')
+    .eq('home_id', home).eq('away_id', away)
+    .is('home_goals', null)
+    .order('matchday')
+    .limit(1);
+
+  let error;
+
+  if (found && found.length) {
+    ({ error } = await sb.from('matches').update({
+      home_goals: hg, away_goals: ag,
+      played_at: new Date().toISOString()
+    }).eq('id', found[0].id));
+  } else {
+    const ok = confirm(
+      'Bu matç fiksturda tapılmadı (ya fikstur qurulmayıb, ya da bu cütlük artıq oynanılıb).\n\n' +
+      'Yenə də əlavə edilsin?'
+    );
+    if (!ok) { $('btnSave').disabled = false; return; }
+
+    ({ error } = await sb.from('matches').insert({
+      home_id: home, away_id: away,
+      home_goals: hg, away_goals: ag,
+      played_at: new Date().toISOString()
+    }));
+  }
+
+  $('btnSave').disabled = false;
+
+  if (error) return flash($('admMsg'), error.message, false);
+
+  const md = found?.[0]?.matchday;
+  flash($('admMsg'),
+    `Yazıldı: ${nameOf(home)} ${hg}–${ag} ${nameOf(away)}` + (md ? ` (Tur ${md})` : ''),
+    true);
+
+  $('aHG').value = 0;
+  $('aAG').value = 0;
+  refresh();
+};
+</script>
+</body>
+</html>
